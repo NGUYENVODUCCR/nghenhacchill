@@ -1,18 +1,22 @@
-# Sử dụng Node.js làm base image
-FROM node:18-alpine
+# Build stage
+FROM node:18-alpine as build
 
-# Thiết lập thư mục làm việc
 WORKDIR /app
-
-# Copy package.json và cài đặt dependencies
 COPY package.json ./
 RUN npm install
-
-# Copy toàn bộ source code
 COPY . .
-
-# Build ứng dụng
 RUN npm run build
 
-# Chạy ứng dụng trên cổng 3000
-CMD ["npm", "start"]
+# Production stage
+FROM nginx:alpine
+
+# Copy bản build sang nginx
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Copy file cấu hình nginx nếu có
+# COPY nginx.conf /etc/nginx/nginx.conf
+
+# Expose cổng 80 cho Render
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
