@@ -3,7 +3,7 @@ import axios from "axios";
 // ===============================
 // ==== CẤU HÌNH CHUNG ==========
 // ===============================
-const API_URL = "http://localhost:8080/api"; // Đảm bảo đúng URL của server backend
+const API_URL = "https://nghenhacchill.onrender.com/api"; // Đảm bảo đúng URL của server backend
 
 // Lấy token từ localStorage
 const getToken = () => localStorage.getItem("token");
